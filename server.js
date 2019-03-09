@@ -355,19 +355,20 @@ app.get('/cloud/standard/frequency', function (request, response)  {
     return 0
   })
 
-  let max = stdElementsData[0].frequency
+  let max = request.query.zoom || stdElementsData[0].frequency
   let cloud = stdElementsData.map(rec => {
-     return `<span style="margin: 2rem; font-size: ${
+     return `<a href="/cloud/standard/frequency?zoom=${rec.frequency}" ><span style="margin: 2rem; font-size: ${
        Math.max(
-        ((rec.frequency/max) * 150), 
+        ((rec.frequency>max?.1:(rec.frequency/max)) * 150), 
        4
-       )}px;">${rec.tag}</span> ` 
-  }).join('')
+       )}px;">${rec.tag}</span></a>` 
+  }).join(' ')
   
   response.send(
     makeCloudPage(
       'Relative frequency: Standard Elements',
-      '<p>This page shows the relative frequency of HTML elements from the HTTPArchive report. <a href="/">Learn More about the project.</a>.</p>',
+      `<p>This page shows the relative frequency of HTML elements from the HTTPArchive report. <a href="/">Learn More about the project.</a>.</p>
+      <p>click on a tag to zoom that tag to the max size. All tags with a higer frequency will be minimized to allow zooming back out</p>`,
       cloud)
   )
 })
@@ -391,27 +392,28 @@ app.get('/cloud/standard/urls', function (request, response)  {
   response.send(
     makeCloudPage(
       'URL frequency: Standard Elements',
-      '<p>This page shows the relative use of HTML elements on unique URLs from the HTTPArchive report. <a href="/">Learn More about the project.</a>.</p>',
+      `<p>This page shows the relative use of HTML elements on unique URLs from the HTTPArchive report. <a href="/">Learn More about the project.</a>.</p>
+      <p>click on a tag to zoom that tag to the max size. All tags with a higer frequency will be minimized to allow zooming back out</p>`,
       cloud)
   )
 })
 
 
 app.get('/cloud/dasherized/frequency', function (request, response)  {
-  let max = data[allTags[0]].total
+  let max = request.query.zoom || data[allTags[0]].total
   
   let cloud = allTags.map(tag => {
-     return `<span style="margin: 1rem; font-size: ${
+     return `<a href="/cloud/dasherized/frequency?zoom=${data[tag].total}" ><span style="margin: 1rem; font-size: ${
         Math.max(
-        ((data[tag].total/max) * 150), 
+        ((data[tag].total>max?.1:(data[tag].total/max)) * 150), 
        4
-       )}px;">${tag}</span>`
-  }).join('')
+       )}px;">${tag}</span></a>`
+  }).join(' ')
   
   
   response.send(
     makeCloudPage(
-      'Relative frequency: Dasherized Elements',
+      'Relative frequency: Dasherized Elements zoomable',
       '<p>This page shows the relative frequency of dasherized elements from the HTTPArchive report. <a href="/">Learn More about the project.</a>.</p>',
       cloud)
   )
@@ -462,48 +464,6 @@ app.get('/tags/:top', function(request, response) {
 app.get('/tags/', (request, response) => {
   response.send(listTags())
 })
-
-
-
-
-app.get('/cloud/x/frequency', function (request, response)  {
-  stdElementsData.sort((a, b) => {
-    if (a.frequency < b.frequency) return 1
-    if (b.frequency < a.frequency) return -1
-    return 0
-  })
-
-  let dataset = stdElementsData.slice()
-  if (request.query.zoom) {
-    dataset = dataset.filter(rec=> rec.frequency < request.query.zoom)
-  }
-  let max = dataset[0].frequency
-  let cloud = dataset.map(rec => {
-     return `<a href="/cloud/x/frequency?zoom=${rec.frequency}" ><span style="margin: 2rem; font-size: ${
-       Math.max(
-        ((rec.frequency>max?.1:(rec.frequency/max)) * 150), 
-       4
-       )}px;">${rec.tag}</span></a>` 
-  }).join(' ')
-  
-  response.send(
-    makeCloudPage(
-      'Relative frequency: Standard Elements',
-      `<p>This page shows the relative frequency of HTML elements from the HTTPArchive report. <a href="/">Learn More about the project.</a>.</p>
-       <p>click on a tag to zoom that tag to the max size.</p>
-        
-       ${(stdElementsData.length !== dataset.length) 
-          ?
-          `<p>${stdElementsData.length - dataset.length} elements occur more frequently than those shown, <a href="/cloud/x/frequency">see them all</a></p>`
-          :
-          ''
-       
-      }`,
-      cloud
-    )
-  )
-})
-
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function() {

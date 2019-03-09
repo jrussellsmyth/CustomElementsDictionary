@@ -11,16 +11,16 @@ The idea here is to create a space to collaboratively analyze that data and prov
 # Exploring tags
 _All of these URLs are subject to change._
 
-You can explore data via [/tags](https://brawny-force.glitch.me/tags) which also accepts a slash numeric to limit the results, for example the top 10  are [/tags/10](https://brawny-force.glitch.me/tags/10).  From there, you can click through to see a list of the individual uses/counts that it encountered in the dataset.
+You can explore data via [/tags](/tags) which also accepts a slash numeric to limit the results, for example the top 10  are [/tags/10](/tags/10).  From there, you can click through to see a list of the individual uses/counts that it encountered in the dataset.
 
 I'm also toying with a few visualization of these on some urls that will probably change.  These ones currently scale a sorted list of the standard elements by either frequency (count of all occurences) or URLs (percentage of urls with those tags)
 
-* [https://brawny-force.glitch.me/cloud/standard/frequency](https://brawny-force.glitch.me/cloud/standard/frequency)
-* [https://brawny-force.glitch.me/cloud/standard/urls](https://brawny-force.glitch.me/cloud/standard/urls)
-* [https://brawny-force.glitch.me/bubble/standard/frequency](https://brawny-force.glitch.me/bubble/standard/frequency)
+* [/cloud/standard/frequency](/cloud/standard/frequency)
+* [/cloud/standard/urls](/cloud/standard/urls)
+* [/bubble/standard/frequency](/bubble/standard/frequency)
 
 This one does the same for the one datapoint we currently have for dasherized elements
-* [https://brawny-force.glitch.me/cloud/dasherized/frequency](https://brawny-force.glitch.me/cloud/dasherized/frequency)
+* [/cloud/dasherized/frequency](/cloud/dasherized/frequency)
 * There isn't one for URLs (yet) as we don't have that data
 
 I'd love to get a similar dataset run for both and be able to come up with good ways to look at the combined set, for example...
